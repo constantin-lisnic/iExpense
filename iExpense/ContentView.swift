@@ -8,14 +8,53 @@
 import SwiftUI
 
 struct ContentView: View {
+    @State private var expenses = Expenses()
+    @State private var showAddNewExpense: Bool = false
+
     var body: some View {
-        VStack {
-            Image(systemName: "globe")
-                .imageScale(.large)
-                .foregroundStyle(.tint)
-            Text("Hello, world!")
+        NavigationStack {
+            List {
+                Section("Personal") {
+                    ForEach(expenses.items.filter { $0.type == "Personal" }) {
+                        item in
+                        item
+                    }
+                    .onDelete { offsets in
+                        removeItems(for: "Personal", at: offsets)
+                    }
+                }
+
+                Section("Business") {
+                    ForEach(expenses.items.filter { $0.type == "Business" }) {
+                        item in
+                        item
+                    }
+                    .onDelete { offsets in
+                        removeItems(for: "Business", at: offsets)
+                    }
+                }
+            }
+            .navigationTitle("iExpenses")
+            .toolbar {
+                Button("Add Expense", systemImage: "plus") {
+                    showAddNewExpense = true
+                }
+            }
+            .sheet(isPresented: $showAddNewExpense) {
+                AddView(expenses: expenses)
+            }
         }
-        .padding()
+    }
+
+    func removeItems(for type: String, at offsets: IndexSet) {
+        // Filter and identify indices to delete
+        let filteredItems = expenses.items.enumerated().filter { $0.element.type == type }
+        let indicesToRemove = offsets.map { filteredItems[$0].offset }
+
+        // Remove items at those indices in reverse to prevent index shifting
+        for index in indicesToRemove.sorted(by: >) {
+            expenses.items.remove(at: index)
+        }
     }
 }
 
