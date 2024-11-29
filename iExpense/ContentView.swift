@@ -36,19 +36,22 @@ struct ContentView: View {
             }
             .navigationTitle("iExpenses")
             .toolbar {
-                Button("Add Expense", systemImage: "plus") {
-                    showAddNewExpense = true
+                NavigationLink {
+                    AddView(expenses: expenses)
+                } label: {
+                    Button("Add Expense", systemImage: "plus") {
+                        showAddNewExpense = true
+                    }
                 }
-            }
-            .sheet(isPresented: $showAddNewExpense) {
-                AddView(expenses: expenses)
             }
         }
     }
 
     func removeItems(for type: String, at offsets: IndexSet) {
         // Filter and identify indices to delete
-        let filteredItems = expenses.items.enumerated().filter { $0.element.type == type }
+        let filteredItems = expenses.items.enumerated().filter {
+            $0.element.type == type
+        }
         let indicesToRemove = offsets.map { filteredItems[$0].offset }
 
         // Remove items at those indices in reverse to prevent index shifting
