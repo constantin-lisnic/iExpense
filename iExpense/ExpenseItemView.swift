@@ -1,15 +1,13 @@
 //
-//  ExpemseItem.swift
+//  ExpenseItemView.swift
 //  iExpense
 //
-//  Created by Constantin Lisnic on 25/11/2024.
+//  Created by Constantin Lisnic on 11/12/2024.
 //
 
-import Foundation
 import SwiftUI
 
-struct ExpenseItem: Identifiable, Codable, View {
-    var id = UUID()
+struct ExpenseItemView: View {
     let name: String
     let type: String
     let amount: Double
@@ -31,4 +29,8 @@ struct ExpenseItem: Identifiable, Codable, View {
                     code: Locale.current.currency?.identifier ?? "USD"))
         }
     }
+}
+
+#Preview {
+    ExpenseItemView(name: "Cheese", type: "Personal", amount: 20.5)
 }
