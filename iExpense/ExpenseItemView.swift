@@ -28,6 +28,9 @@ struct ExpenseItemView: View {
                 format: .currency(
                     code: Locale.current.currency?.identifier ?? "USD"))
         }
+        .accessibilityElement()
+        .accessibilityLabel("\(name), \(Int(amount)) \(Locale.current.currency?.identifier ?? "USD")")
+        .accessibilityHint(type)
     }
 }
 
